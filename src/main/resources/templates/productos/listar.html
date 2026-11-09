@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}">Listado</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container py-4">
+
+    <div class="p-4 mb-4 bg-light rounded-3 shadow-sm">
+        <h1 class="display-6" th:text="${titulo}">Catálogo de Productos</h1>
+        <p class="text-muted">Desarrollado por: <strong th:text="${autor}">Autor</strong></p>
+        <a th:href="@{/productos/nuevo}">Registrar Nuevo Producto</a>
+    </div>
+    <!-- Filtro con @RequestParam -->
+    <div class="mb-3">
+        <span>Filtrar por categoría: </span>
+        <a th:href="@{/productos/listar}" class="btn btn-outline-secondary">Todos</a>
+        <a th:href="@{/productos/listar(categoria='Computo')}" class="btn btn-outline-info">Computo</a>
+        <a th:href="@{/productos/listar(categoria='Accesorios')}" class="btn btn-outline-info">Accesorios</a>
+    </div>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Categoría</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- th:each para recorrer la lista del Model -->
+            <tr th:each="prod : ${productos}">
+                <td th:text="${prod.id}">1</td>
+                <td th:text="${prod.nombre}">Nombre</td>
+                <td th:text="'$' + ${#numbers.formatDecimal(prod.precio, 1, 2)}">$0.00</td>
+                <td th:text="${prod.categoria}">Cat</td>
+                
+                <td>
+                    <!-- Enlace con @PathVariable -->
+                    <a th:href="@{/productos/detalle/{id}(id=${prod.id})}" >Ver Detalle</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
